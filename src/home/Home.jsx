@@ -15,9 +15,9 @@ function Home() {
         </nav>
       {/* <img src={Main} className='w-full ' /> */}
       <Main />
+        <Courses/>
       <Stack/>
         <StudentForm/>
-        <Courses/>
         <Certificate  />
         <Footer />
        <WhatsAppButton/>

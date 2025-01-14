@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function StudentForm() {
-  const [formData, setFormData] = useState({
+  const defaultFormState = {
     fullname: '',
     mobile: '',
     age: '',
@@ -11,168 +13,123 @@ export default function StudentForm() {
     course: '',
     degree: '',
     startYear: '',
-    endYear: ''
-  });
+    endYear: '',
+  };
+
+  const [formData, setFormData] = useState(defaultFormState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to a server
+    setIsSubmitting(true);
+  
+    const scriptURL =
+      '';
+  
+    try {
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+  
+      console.log('Response:', response);
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Success:', result);
+        toast.success('Form submitted successfully!');
+        setFormData(defaultFormState);
+      } else {
+        const errorResult = await response.json();
+        console.error('Error result:', errorResult);
+        toast.error(`Form submission failed: ${errorResult.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      toast.error('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+  
 
   return (
-    <div id='form' className=" flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-md p-2 w-full max-w-[600px]">
-        <h1 className="text-2xl font-bold text-center mb-6">Student Information Form</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-              <input
-                type="text"
-                id="fullname"
-                name="fullname"
-                value={formData.fullname}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="John Doe"
-              />
+    <>
+      <ToastContainer />
+      <div
+        id="form"
+        className="flex bg-gradient-to-br from-green-50 to-white items-center justify-center p-8"
+      >
+        <div className="from-green-50 to-white rounded-lg shadow-lg p-2 w-full max-w-[600px]">
+          <h1 className="text-2xl font-bold text-center mb-6">
+            Student Information Form
+          </h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { label: 'Full Name', name: 'fullname', type: 'text', placeholder: 'John Doe' },
+                { label: 'Mobile Number', name: 'mobile', type: 'tel', placeholder: '1234567890' },
+                { label: 'Age', name: 'age', type: 'number', placeholder: '20' },
+                { label: 'Email', name: 'email', type: 'email', placeholder: 'johndoe@example.com' },
+                { label: 'College Name', name: 'college', type: 'text', placeholder: 'University of Example', colSpan: 2 },
+                { label: 'Address', name: 'address', type: 'textarea', placeholder: '123 Main St, City, Country', colSpan: 2, rows: 3 },
+                { label: 'Course', name: 'course', type: 'text', placeholder: 'Computer Science' },
+                { label: 'Degree', name: 'degree', type: 'text', placeholder: 'Bachelor of Science' },
+                { label: 'Start Year', name: 'startYear', type: 'number', placeholder: '2020' },
+                { label: 'End Year', name: 'endYear', type: 'number', placeholder: '2024' },
+              ].map(({ label, name, type, placeholder, colSpan, rows }, index) => (
+                <div key={index} className={colSpan ? `md:col-span-${colSpan}` : ''}>
+                  <label
+                    htmlFor={name}
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    {label}
+                  </label>
+                  {type === 'textarea' ? (
+                    <textarea
+                      id={name}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      rows={rows || 3}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                      placeholder={placeholder}
+                    />
+                  ) : (
+                    <input
+                      type={type}
+                      id={name}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                      placeholder={placeholder}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-            <div>
-              <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-              <input
-                type="tel"
-                id="mobile"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="1234567890"
-              />
-            </div>
-            <div>
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-              <input
-                type="number"
-                id="age"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="20"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="johndoe@example.com"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label htmlFor="college" className="block text-sm font-medium text-gray-700 mb-1">College Name</label>
-              <input
-                type="text"
-                id="college"
-                name="college"
-                value={formData.college}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="University of Example"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-              <textarea
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="123 Main St, City, Country"
-              ></textarea>
-            </div>
-            <div>
-              <label htmlFor="course" className="block text-sm font-medium text-gray-700 mb-1">Course</label>
-              <input
-                type="text"
-                id="course"
-                name="course"
-                value={formData.course}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Computer Science"
-              />
-            </div>
-            <div>
-              <label htmlFor="degree" className="block text-sm font-medium text-gray-700 mb-1">Degree</label>
-              <input
-                type="text"
-                id="degree"
-                name="degree"
-                value={formData.degree}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Bachelor of Science"
-              />
-            </div>
-            <div>
-              <label htmlFor="startYear" className="block text-sm font-medium text-gray-700 mb-1">Start Year</label>
-              <input
-                type="number"
-                id="startYear"
-                name="startYear"
-                value={formData.startYear}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="2020"
-              />
-            </div>
-            <div>
-              <label htmlFor="endYear" className="block text-sm font-medium text-gray-700 mb-1">End Year</label>
-              <input
-                type="number"
-                id="endYear"
-                name="endYear"
-                value={formData.endYear}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
-                placeholder="2024"
-              />
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
-          >
-            Submit
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

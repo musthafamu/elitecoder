@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+'use client'
+
+import React from 'react';
+import { motion } from 'framer-motion';
 import express from '../../assets/svg/express.svg';
 import next from '../../assets/svg/nextjs.svg';
 import node from '../../assets/svg/node.svg';
@@ -16,32 +19,43 @@ const techStack = [
   { name: 'Node.js', src: node },
   { name: 'Python', src: python },
   { name: 'React', src: react },
-  {name:"js",src:js},
-  {name:"html",src:html},
-  {name:"mongo",src:mongo},
-  {name:"css",src:css},
-  {name:"mysql",src:mysql},
-
+  { name: 'JavaScript', src: js },
+  { name: 'HTML', src: html },
+  { name: 'MongoDB', src: mongo },
+  { name: 'CSS', src: css },
+  { name: 'MySQL', src: mysql },
 ];
 
 function AutoScrollSlider() {
   return (
-    <div className="relative  overflow-hidden flex   p-4 gap-5 flex-col items-center border-b">
-      <div className='flex w-full  justify-center'>
-      <h1 className='font-bold text-[50px] text-shadow text-green-500'>Tech Stack</h1>
-
-      </div>
-      <div className='flex gap-4'>
-
-      {techStack.map((tech) => (
- <div
- key={tech.name}
- className="tech-item flex-shrink-0 transition-transform duration-300 hover:scale-125 hover:rotate-6"
->
- <img src={tech.src} alt={tech.name} className="w-20 h-20" />
-</div>
-
-      ))}
+    <div className="relative overflow-hidden bg-gradient-to-br from-green-50 to-white p-4 border-b">
+      <h1 className="font-bold text-5xl text-center text-green-600 mb-8 text-shadow">Technology Stack</h1>
+      <div className="w-full max-w-3xl mx-auto overflow-hidden">
+        <motion.div 
+          className="flex gap-6"
+          animate={{
+            x: [0, -50 * techStack.length],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 15,
+              ease: "linear",
+            },
+          }}
+        >
+          {[...techStack, ...techStack].map((tech, index) => (
+            <motion.div
+              key={`${tech.name}-${index}`}
+              className="tech-item flex-shrink-0"
+              whileHover={{ scale: 1.2, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <img src={tech.src} alt={tech.name} className="w-16 h-16" />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );

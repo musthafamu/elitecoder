@@ -1,9 +1,9 @@
 import React from 'react';
 import certificate from '../../assets/Certificate.jpeg';
-
+import experience from '../../assets/experience.jpg'
 function CertificateCard({ text, imageSrc, altText }) {
   return (
-    <div className="flex items-start max-w-[600px] border-2 border-green-200 p-2 rounded-lg shadow-md">
+    <div className="flex items-start max-w-[500px] bg-gradient-to-br from-green-50 to-white  border-2 p-2 rounded-lg shadow-md">
       <img
         className="w-1/3 h-auto object-cover rounded-md mr-2 mx-auto"
         src={imageSrc}
@@ -25,15 +25,15 @@ function Certificate() {
     },
     {
         text: 'We will provide a certificate upon successful completion of the course and submission of a project.',
-        imageSrc: certificate,
+        imageSrc: experience,
       altText: 'Certificate 2',
     },
   ];
 
   return (
-    <div className="py-6 px-4 border-t">
+    <div className="py-6 px-4  border-t">
       <div className="text-center mb-4">
-        <h1 className="font-bold text-[50px] text-green-500">Certificates We Offer</h1>
+        <h1 className="font-bold text-[40px] text-green-600">Certificates We Offer</h1>
       </div>
 
       <div className="flex flex-wrap gap-12 justify-center">
