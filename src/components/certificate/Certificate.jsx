@@ -1,6 +1,6 @@
 import React from 'react';
 import certificate from '../../assets/Certificate.jpeg';
-import experience from '../../assets/experience.jpg'
+import experience from '../../assets/experience.jpg';
 function CertificateCard({ text, imageSrc, altText }) {
   return (
     <div className="flex items-start max-w-[500px] bg-gradient-to-br from-green-50 to-white  border-2 p-2 rounded-lg shadow-md">

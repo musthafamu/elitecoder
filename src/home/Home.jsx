@@ -7,6 +7,7 @@ import Main from '../components/main/Main'
 import Stack from '../components/course/Stack'
 import Courses from '../components/course/Courses'
 import Certificate from  '../components/certificate/Certificate'
+import Journey from '../components/Journey/Journey'
 function Home() {
   return (
     <div>
@@ -15,9 +16,9 @@ function Home() {
         </nav>
       {/* <img src={Main} className='w-full ' /> */}
       <Main />
+      <Journey/>
         <Courses/>
       <Stack/>
-        <StudentForm/>
         <Certificate  />
         <Footer />
        <WhatsAppButton/>

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import career from '../../assets/svg/Career.svg';
 function Main() {
     return (
-      <div className='flex flex-col lg:flex-row justify-between items-center min-h-screen bg-gradient-to-br from-green-50 to-white p-8 overflow-hidden'>
+      <div className='flex flex-col lg:flex-row justify-between items-center min-h-screen bg-gradient-to-br bg-white  p-8 overflow-hidden'>
         <motion.div 
           className="max-w-2xl mb-12 lg:mb-0 lg:mr-12"
           initial={{ opacity: 0, x: -50 }}
